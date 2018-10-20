@@ -1,7 +1,7 @@
 class GameScreen extends THREE.Object3D {
 
-	createFloor (x, y, z) {
-		'use strict';
+    createFloor (x, y, z) {
+	   'use strict';
         this.geometry = new THREE.BoxGeometry(200, 1, 100);
         this.mesh = new THREE.Mesh(this.geometry, this.floorMaterial);
         this.mesh.position.set(x, y-0.5, z);
@@ -18,7 +18,7 @@ class GameScreen extends THREE.Object3D {
 	}
 
 	constructor (x, y, z) {
-		'use strict';
+	   'use strict';
 
         super();
 
@@ -30,6 +30,10 @@ class GameScreen extends THREE.Object3D {
         this.createWall(x+100, y, z, (Math.PI) * 0.5, 100);
         this.createWall(x, y, z-50, 0, 200);
         this.createWall(x, y, z+50, 0, 200);
+
+        this.position.x = x;
+        this.position.y = y;
+        this.position.z = z;
 
 	}
 
