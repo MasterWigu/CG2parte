@@ -6,9 +6,9 @@ class Ball extends THREE.Object3D {
 
 	createBall (x, y, z) {
 		'use strict';
-    	this.geometry = new THREE.SphereGeometry(this.raio, 32, 32);
+    	this.geometry = new THREE.SphereGeometry(this.radius, 32, 32);
         this.mesh = new THREE.Mesh(this.geometry, this.material);
-        this.mesh.position.set(x, y + this.raio, z);
+        this.mesh.position.set(x, y + this.radius, z);
         this.add(this.mesh);
 	}
 
@@ -18,12 +18,12 @@ class Ball extends THREE.Object3D {
 
 		super();
 
-		this.raio = 0.025 * (Math.sqrt(100*100+200*200));
+		this.radius = 0.025 * (Math.sqrt(100*100+200*200));
 
 		this.material = new THREE.MeshBasicMaterial({ color: Math.floor(this.randomFromInterval(0, 0xffff00)), wireframe: true });
 
-		var zz = this.randomFromInterval(-50 + this.raio, 50 - this.raio);
-		var xx = this.randomFromInterval(-100 + this.raio, 100 - this.raio);
+		var zz = this.randomFromInterval(-50 + this.radius, 50 - this.radius);
+		var xx = this.randomFromInterval(-100 + this.radius, 100 - this.radius);
 		console.log (xx);
 		console.log (zz);
 

@@ -11,11 +11,13 @@ class Scene extends THREE.Scene {
         this.screen = new GameScreen (0, 0, 0);
         this.add(this.screen);
 
-        for (var i=0; i < 10; i++) {
+        for (var i=0; i < 9; i++) {
             this.ball = new Ball (0, 0, 0);
             //if para se bolas ficarem sobrepostas
             this.add(this.ball);
         }
+
+        // criar ultima bola e por a camara la dentro
 
     }
     
