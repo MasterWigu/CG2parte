@@ -12,8 +12,19 @@ class Ball extends THREE.Object3D {
         this.add(this.mesh);
 	}
 
+	createCamera(x, y, z) {
+		this.camera3 = new THREE.PerspectiveCamera(70,
+                                         window.innerWidth / window.innerHeight,
+                                         1,
+                                         100000000);
+        this.camera3.position.x = x; // fica no centro da bola em relacao ao eixo dos xx
+        this.camera3.position.y = y; //fica a altura do centro da bola (=radius)
+        this.camera3.position.z = z + 15; // afasta-se 15 do centro
+        this.camera3.lookAt(new THREE.Vector3(x, y, z)); // camara esta a apontar para o centro da bola
+	}
 
-	constructor (x, y, z) {
+
+	constructor (x, y, z, flag) {
 		'use strict';
 
 		super();
@@ -22,17 +33,18 @@ class Ball extends THREE.Object3D {
 
 		this.material = new THREE.MeshBasicMaterial({ color: Math.floor(this.randomFromInterval(0, 0xffff00)), wireframe: true });
 
-		var zz = this.randomFromInterval(-50 + this.radius, 50 - this.radius);
-		var xx = this.randomFromInterval(-100 + this.radius, 100 - this.radius);
-		console.log (xx);
-		console.log (zz);
-
-		this.createBall(xx, y, zz);
+		this.xx = this.randomFromInterval(-99.5 + this.radius, 99.5 - this.radius);
+		this.zz = this.randomFromInterval(-49.5 + this.radius, 49.5 - this.radius);
+		
+		this.createBall(this.xx, y, this.zz);
 
 		this.position.x = x;
         this.position.y = y;
         this.position.z = z;
-	}
 
+        if (flag)
+        	this.createCamera(this.xx, this.radius, this.zz);
+
+	}
 
 }

@@ -2,19 +2,42 @@ var controls;
 
 class Scene extends THREE.Scene {
 
+    seeIfCollides(ball) {
+        for (var i = 0; i < this.vector.length; i++) {
+            var b = this.vector[i];
+            if ((2 * ball.radius) >= Math.sqrt(Math.pow(ball.xx-b.xx, 2) + Math.pow(ball.zz-b.zz, 2))) {
+                return true;
+            }
+        }
+        return false;
+    }
 
     createScene() {
         'use strict';
+
+        this.vector = [];
     
         this.add(new THREE.AxisHelper(10));
 
         this.screen = new GameScreen (0, 0, 0);
         this.add(this.screen);
 
-        for (var i=0; i < 9; i++) {
-            this.ball = new Ball (0, 0, 0);
-            //if para se bolas ficarem sobrepostas
-            this.add(this.ball);
+        var ball;
+
+        ball = new Ball (0, 0, 0, true);
+        this.add(ball);
+        this.vector[0] = ball;
+
+
+        var i = 1;
+
+        while (i < 10) {
+            ball = new Ball (0, 0, 0, false);
+            if (!this.seeIfCollides(ball)) {
+                this.add(ball);
+                this.vector[i] = ball;
+                i++;
+            }
         }
 
         // criar ultima bola e por a camara la dentro
@@ -55,16 +78,6 @@ class Scene extends THREE.Scene {
         this.camera2.position.y = 125;
         this.camera2.position.z = 125;
         this.camera2.lookAt(this.position);
-
-        this.camera3 = new THREE.PerspectiveCamera(70,
-                                         window.innerWidth / window.innerHeight,
-                                         1,
-                                         100000000);
-        this.camera3.position.x = 0;
-        this.camera3.position.y = 0;
-        this.camera3.position.z = 150;
-        this.camera3.lookAt(this.position); //ball
-
 
     }
     
@@ -134,7 +147,7 @@ class Scene extends THREE.Scene {
         if (this.activeCamera == 2)
             this.renderer.render(this, this.camera2);
         if (this.activeCamera == 3)
-            this.renderer.render(this, this.camera3);
+            this.renderer.render(this, this.vector[0].camera3);
     }
     
     constructor() {
