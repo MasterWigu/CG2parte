@@ -4,11 +4,20 @@ class Scene extends THREE.Scene {
 
     movement() {
         var delta = this.clock.getDelta();
-        //console.log(delta);
         for (var i = 0; i <  this.ballVector.length; i++) {
             this.ballVector[i].ballMovement(delta);
         }
     }
+
+/*
+    updateMovement(){
+
+        for (var i = 0; i <  this.ballVector.length; i++) {
+            this.ballVector[i].updateBallMovement();
+            //console.log('ola');
+        }
+
+    } */
 
     seeIfCollides(ball) {
         for (var i = 0; i < this.ballVector.length; i++) {
@@ -49,6 +58,8 @@ class Scene extends THREE.Scene {
                 i++;
             }
         }
+
+        //window.setInterval(this.updateMovement(), 2000);
     }
     
     createCameras() {

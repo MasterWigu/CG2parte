@@ -7,10 +7,12 @@ class Ball extends THREE.Object3D {
 	ballMovement(delta) {
 		this.translateOnAxis(this.movementVector, this.speed * delta);
 	}
-
+/*
 	updateBallMovement() {
-		this.speed += 0.05;
-	}
+		this.speed += 5;
+
+		//console.log(this.speed);
+	}*/
 
 	createBall (x, y, z) {
 		'use strict';
@@ -27,8 +29,9 @@ class Ball extends THREE.Object3D {
                                          100000000);
         this.camera3.position.x = x; // fica no centro da bola em relacao ao eixo dos xx
         this.camera3.position.y = y; //fica a altura do centro da bola (=radius)
-        this.camera3.position.z = z + 15; // afasta-se 15 do centro
-        this.camera3.lookAt(new THREE.Vector3(x, y, z)); // camara esta a apontar para o centro da bola
+        this.camera3.position.z = z; // afasta-se 15 do centro
+        this.camera3.lookAt(new THREE.Vector3(-10, 0, 0)); // camara esta a apontar para o centro da bola
+        this.add(this.camera3); // camara fica efetivamente dentro da bola
 	}
 
 
