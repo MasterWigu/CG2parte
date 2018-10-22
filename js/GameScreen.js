@@ -1,5 +1,13 @@
 class GameScreen extends THREE.Object3D {
 
+    /*returnWallMaterial() {
+        return this.wallMaterial;
+    }
+
+    returnFloorMaterial() {
+        return this.floorMaterial;
+    }*/
+
     createFloor (x, y, z) {
 	   'use strict';
         this.geometry = new THREE.BoxGeometry(200, 1, 100);
@@ -22,10 +30,13 @@ class GameScreen extends THREE.Object3D {
 
         super();
 
-        this.floorMaterial = new THREE.MeshBasicMaterial({ color: 0x2E8B57 });
-        this.wallMaterial = new THREE.MeshBasicMaterial({ color: 0x8B4513 });
+        this.floorMaterial = new THREE.MeshBasicMaterial({ color: 0x2E8B57, wireframe: false });
+        this.wallMaterial = new THREE.MeshBasicMaterial({ color: 0x8B4513, wireframe: false });
 
         this.createFloor(x, y, z);
+
+        this.wallVector = [];
+
         this.createWall(x-100, y, z, (Math.PI) * 0.5, 100);
         this.createWall(x+100, y, z, (Math.PI) * 0.5, 100);
         this.createWall(x, y, z-50, 0, 200);

@@ -4,6 +4,14 @@ class Ball extends THREE.Object3D {
     	return Math.random()*(max-min)+min;
 	}
 
+	ballMovement(delta) {
+		this.translateOnAxis(this.movementVector, this.speed * delta);
+	}
+
+	updateBallMovement() {
+		this.speed += 0.05;
+	}
+
 	createBall (x, y, z) {
 		'use strict';
     	this.geometry = new THREE.SphereGeometry(this.radius, 32, 32);
@@ -33,7 +41,7 @@ class Ball extends THREE.Object3D {
 
 		this.radius = 0.05 * (Math.sqrt(100*100+200*200));
 
-		this.material = new THREE.MeshBasicMaterial({ color: Math.floor(this.randomFromInterval(0, 0xffff00)), wireframe: true });
+		this.material = new THREE.MeshBasicMaterial({ color: Math.floor(this.randomFromInterval(0, 0xffff00)), wireframe: false });
 
 		this.xx = this.randomFromInterval(-99.5 + this.radius, 99.5 - this.radius);
 		this.zz = this.randomFromInterval(-49.5 + this.radius, 49.5 - this.radius);
@@ -46,6 +54,9 @@ class Ball extends THREE.Object3D {
 
         if (flag)
         	this.createCamera(this.xx, this.radius, this.zz);
+
+        this.movementVector = new THREE.Vector3(this.xx, 0, this.zz);
+        this.speed = this.randomFromInterval(0.1,1); 
 
 	}
 

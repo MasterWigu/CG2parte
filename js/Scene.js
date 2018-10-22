@@ -2,9 +2,17 @@ var controls;
 
 class Scene extends THREE.Scene {
 
+    movement() {
+        var delta = this.clock.getDelta();
+        //console.log(delta);
+        for (var i = 0; i <  this.ballVector.length; i++) {
+            this.ballVector[i].ballMovement(delta);
+        }
+    }
+
     seeIfCollides(ball) {
-        for (var i = 0; i < this.vector.length; i++) {
-            var b = this.vector[i];
+        for (var i = 0; i < this.ballVector.length; i++) {
+            var b = this.ballVector[i];
             if ((2 * ball.radius) >= Math.sqrt(Math.pow(ball.xx-b.xx, 2) + Math.pow(ball.zz-b.zz, 2))) {
                 return true;
             }
@@ -15,7 +23,9 @@ class Scene extends THREE.Scene {
     createScene() {
         'use strict';
 
-        this.vector = [];
+        this.clock = new THREE.Clock();
+
+        this.ballVector = [];
     
         this.add(new THREE.AxisHelper(10));
 
@@ -26,7 +36,7 @@ class Scene extends THREE.Scene {
 
         ball = new Ball (0, 0, 0, true);
         this.add(ball);
-        this.vector[0] = ball;
+        this.ballVector[0] = ball;
 
 
         var i = 1;
@@ -35,7 +45,7 @@ class Scene extends THREE.Scene {
             ball = new Ball (0, 0, 0, false);
             if (!this.seeIfCollides(ball)) {
                 this.add(ball);
-                this.vector[i] = ball;
+                this.ballVector[i] = ball;
                 i++;
             }
         }
@@ -111,14 +121,13 @@ class Scene extends THREE.Scene {
             this.activeCamera = 0;
             break;
 
-
         case 65: //A
         case 97: //a
-            this.traverse(function (node) {
-                if (node instanceof THREE.Mesh) {
-                    node.material.wireframe = !node.material.wireframe;
-                }
-            });
+            this.screen.wallMaterial.wireframe = !this.screen.wallMaterial.wireframe;
+            this.screen.floorMaterial.wireframe = !this.screen.floorMaterial.wireframe;
+            for (var i = 0; i < this.ballVector.length; i++) {
+                this.ballVector[i].material.wireframe = !this.ballVector[i].material.wireframe;
+            }
             break;
         case 83:  //S
         case 115: //s
@@ -144,7 +153,7 @@ class Scene extends THREE.Scene {
         if (this.activeCamera == 2)
             this.renderer.render(this, this.camera2);
         if (this.activeCamera == 3)
-            this.renderer.render(this, this.vector[0].camera3);
+            this.renderer.render(this, this.ballVector[0].camera3);
     }
     
     constructor() {
@@ -177,5 +186,8 @@ class Scene extends THREE.Scene {
         this.render();
         this.controls.update(); //para a camara movivel (apagar)
         requestAnimationFrame(this.animate.bind(this));
+        this.movement();
+
+
     }
 }
