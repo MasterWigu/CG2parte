@@ -39,9 +39,6 @@ class Scene extends THREE.Scene {
                 i++;
             }
         }
-
-        // criar ultima bola e por a camara la dentro
-
     }
     
     createCameras() {

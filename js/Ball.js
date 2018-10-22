@@ -8,7 +8,7 @@ class Ball extends THREE.Object3D {
 		'use strict';
     	this.geometry = new THREE.SphereGeometry(this.radius, 32, 32);
         this.mesh = new THREE.Mesh(this.geometry, this.material);
-        this.mesh.position.set(x, y + this.radius, z);
+        this.mesh.position.set(x, y, z);
         this.add(this.mesh);
 	}
 
@@ -29,18 +29,20 @@ class Ball extends THREE.Object3D {
 
 		super();
 
-		this.radius = 0.025 * (Math.sqrt(100*100+200*200));
+		this.add(new THREE.AxisHelper(20));
+
+		this.radius = 0.05 * (Math.sqrt(100*100+200*200));
 
 		this.material = new THREE.MeshBasicMaterial({ color: Math.floor(this.randomFromInterval(0, 0xffff00)), wireframe: true });
 
 		this.xx = this.randomFromInterval(-99.5 + this.radius, 99.5 - this.radius);
 		this.zz = this.randomFromInterval(-49.5 + this.radius, 49.5 - this.radius);
 		
-		this.createBall(this.xx, y, this.zz);
+		this.createBall(0, 0, 0);
 
-		this.position.x = x;
-        this.position.y = y;
-        this.position.z = z;
+		this.position.x = x + this.xx;
+        this.position.y = y + this.radius;
+        this.position.z = z + this.zz;
 
         if (flag)
         	this.createCamera(this.xx, this.radius, this.zz);
