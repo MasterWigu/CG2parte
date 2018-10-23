@@ -118,7 +118,7 @@ class Scene extends THREE.Scene {
     
     createCameras() {
         'use strict';
-        var distance = 10;
+        this.distance = 10;
         this.activeCamera = 0;  //guarda qual a camara que estamos a usar (para o render) no onkeydown, de acordo com a tecla premida
 
         //Camera temporaria movível
@@ -131,10 +131,10 @@ class Scene extends THREE.Scene {
         this.camera0.position.z = 125;
         this.camera0.lookAt(this.position);
 
-        this.camera1 = new THREE.OrthographicCamera(-window.innerWidth / distance,
-													window.innerWidth / distance,
-													window.innerHeight / distance,
-													-window.innerHeight / distance, 
+        this.camera1 = new THREE.OrthographicCamera(-window.innerWidth / this.distance,
+													window.innerWidth / this.distance,
+													window.innerHeight / this.distance,
+													-window.innerHeight / this.distance, 
 													1, 
 													1000);
         this.camera1.position.x = 0;
@@ -156,16 +156,28 @@ class Scene extends THREE.Scene {
     onResize() {
         'use strict';
     
-        this.renderer.setSize(window.innerWidth, window.innerHeight);
-        
-        if (window.innerHeight > 0 && window.innerWidth > 0) {
-            this.camera0.aspect = window.innerWidth / window.innerHeight;
-            this.camera0.updateProjectionMatrix();
+        if (this.activeCamera instanceof THREE.PerspectiveCamera) {
+            this.renderer.setSize(window.innerWidth, window.innerHeight);
+            
+            if (window.innerHeight > 0 && window.innerWidth > 0) {
+                this.activeCamera.aspect = window.innerWidth / window.innerHeight;
+                this.activeCamera.updateProjectionMatrix();
+            }
         }
+
+        if (this.activeCamera instanceof THREE.OrthographicCamera) {
+            let aspect = window.innerWidth / window.innerHeight;
+            this.activeCamera.left = -this.distance * aspect / 2;
+            this.activeCamera.right = this.distance * aspect / 2;
+            this.activeCamera.top = this.distance / 2;
+            this.activeCamera.bottom = -this.distance / 2;
+            this.renderer.setSize(window.innerWidth, window.innerHeight);
+        }
+
     
-        this.camera1.update();
+        /*this.camera1.update();
         this.camera2.update();
-        this.camera3.update();
+        this.camera3.update();*/
 
     }
 
@@ -174,16 +186,16 @@ class Scene extends THREE.Scene {
         'use strict';
         switch (e.keyCode) {
         case 49:
-            this.activeCamera = 1;
+            this.activeCamera = this.camera1;
             break;
         case 50:
-            this.activeCamera = 2;
+            this.activeCamera = this.camera2;
             break;
         case 51:
-            this.activeCamera = 3;
+            this.activeCamera = this.camera3;
             break;
         case 52: //para camara movivel
-            this.activeCamera = 0;
+            this.activeCamera = this.camera0;
             break;
 
         case 65: //A
@@ -193,10 +205,6 @@ class Scene extends THREE.Scene {
             for (var i = 0; i < this.ballVector.length; i++) {
                 this.ballVector[i].material.wireframe = !this.ballVector[i].material.wireframe;
             }
-            break;
-        case 83:  //S
-        case 115: //s
-            
             break;
         case 69:  //E
         case 101: //e
