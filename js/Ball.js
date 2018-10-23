@@ -17,8 +17,6 @@ class Ball extends THREE.Object3D {
 
 	updateBallMovement() {
 		this.speed += 0.001;
-
-		//console.log(this.speed);
 	}
 
 	createBall (x, y, z) {
@@ -46,7 +44,6 @@ class Ball extends THREE.Object3D {
         this.add(this.camera3); // camara fica efetivamente dentro da bola
 	}
 
-
 	constructor (x, y, z, flag) {
 		'use strict';
 
@@ -68,11 +65,9 @@ class Ball extends THREE.Object3D {
         this.position.z = z + this.zz;
 
         if (flag)
-        	this.createCamera(this.xx, this.radius, this.zz);
+        	this.createCamera(25, this.radius, 0);
 
         this.movementVector = new THREE.Vector3(this.xx, 0, this.zz);
         this.speed = this.randomFromInterval(0.1,1); 
-
 	}
-
 }

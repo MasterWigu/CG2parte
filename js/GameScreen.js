@@ -1,13 +1,5 @@
 class GameScreen extends THREE.Object3D {
 
-    /*returnWallMaterial() {
-        return this.wallMaterial;
-    }
-
-    returnFloorMaterial() {
-        return this.floorMaterial;
-    }*/
-
     createFloor (x, y, z) {
 	   'use strict';
         this.geometry = new THREE.BoxGeometry(200, 1, 100);
@@ -45,7 +37,5 @@ class GameScreen extends THREE.Object3D {
         this.position.x = x;
         this.position.y = y;
         this.position.z = z;
-
 	}
-
 }

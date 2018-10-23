@@ -12,9 +12,7 @@ class Scene extends THREE.Scene {
     updateMovement(){
         for (var i = 0; i <  this.ballVector.length; i++) {
             this.ballVector[i].updateBallMovement();
-            //console.log('ola');
         }
-        console.log("aumentei a velocidade");
     }
 
     seeIfCollides(ball) {
@@ -26,7 +24,6 @@ class Scene extends THREE.Scene {
         }
         return false;
     }
-
 
     colidesWall(){ 
 
@@ -80,9 +77,8 @@ class Scene extends THREE.Scene {
                     b1.movementVector.sub(c1_c2);
                     b2.movementVector.add(c1_c2);
 
+                    //v' = v - (((v1-v2).(c1-c2))/||c1-c2||^2)*(c1-c2)
                 }
-
-                //v' = v - (((v1-v2).(c1-c2))/||c1-c2||^2)*(c1-c2)
             }
         }
     }
