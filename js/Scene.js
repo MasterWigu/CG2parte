@@ -9,15 +9,13 @@ class Scene extends THREE.Scene {
         }
     }
 
-/*
     updateMovement(){
-
         for (var i = 0; i <  this.ballVector.length; i++) {
             this.ballVector[i].updateBallMovement();
             //console.log('ola');
         }
-
-    } */
+        console.log("aumentei a velocidade");
+    }
 
     seeIfCollides(ball) {
         for (var i = 0; i < this.ballVector.length; i++) {
@@ -30,15 +28,21 @@ class Scene extends THREE.Scene {
     }
 
 
-    colidesWall(){ //verificacao entrar parede
+    colidesWall(){ 
 
         for (var i = 0; i < this.ballVector.length; i++) {
             var b = this.ballVector[i];
-            if (b.position.x <= -100+b.radius+0.5 || b.position.x >= 100-b.radius-0.5){
-                b.movementVector.multiply(new THREE.Vector3(-1,1,1));
+            if (b.position.x <= -100+b.radius+0.5) {
+                b.movementVector.setX(Math.abs(b.movementVector.x));
             }
-            if (b.position.z <= -50+b.radius+0.5 || b.position.z >= 50-b.radius-0.5) {
-                b.movementVector.multiply(new THREE.Vector3(1,1,-1));
+            if (b.position.x >= 100-b.radius-0.5) {
+                b.movementVector.setX(-Math.abs(b.movementVector.x));
+            }
+            if (b.position.z <= -50+b.radius+0.5) {
+                b.movementVector.setZ(Math.abs(b.movementVector.z));
+            }
+            if (b.position.z >= 50-b.radius-0.5) {
+                b.movementVector.setZ(-Math.abs(b.movementVector.z));
             }
         }
     }
@@ -48,9 +52,7 @@ class Scene extends THREE.Scene {
         for (var i = 0; i < this.ballVector.length; i++) {
             var b1 = this.ballVector[i];
             for (var j = i-1; j >= 0 ; j--) {
-
                 var b2 = this.ballVector[j];
-                console.log(this.ballVector[0].position.x);
                 if ((2 * b1.radius) >= Math.sqrt(Math.pow(b1.position.x-b2.position.x, 2) + Math.pow(b1.position.z-b2.position.z, 2))) {
                     var c1 = new THREE.Vector3();
                     c1.copy(b1.position);
@@ -115,7 +117,7 @@ class Scene extends THREE.Scene {
             }
         }
 
-        //window.setInterval(this.updateMovement(), 2000);
+        window.setInterval(this.updateMovement.bind(this), 2000);
     }
     
     createCameras() {

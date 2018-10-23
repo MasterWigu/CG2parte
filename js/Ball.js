@@ -14,12 +14,12 @@ class Ball extends THREE.Object3D {
 		this.rotationVector.normalize();
 		this.obj.rotateOnAxis(this.rotationVector, (this.speed * delta)/(this.radius)*100);
 	}
-/*
+
 	updateBallMovement() {
-		this.speed += 5;
+		this.speed += 0.001;
 
 		//console.log(this.speed);
-	}*/
+	}
 
 	createBall (x, y, z) {
 		'use strict';
