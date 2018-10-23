@@ -186,16 +186,16 @@ class Scene extends THREE.Scene {
         'use strict';
         switch (e.keyCode) {
         case 49:
-            this.activeCamera = this.camera1;
+            this.activeCamera = 1;
             break;
         case 50:
-            this.activeCamera = this.camera2;
+            this.activeCamera = 2;
             break;
         case 51:
-            this.activeCamera = this.camera3;
+            this.activeCamera = 3;
             break;
         case 52: //para camara movivel
-            this.activeCamera = this.camera0;
+            this.activeCamera = 0;
             break;
 
         case 65: //A
