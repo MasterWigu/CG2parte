@@ -6,6 +6,13 @@ class Ball extends THREE.Object3D {
 
 	ballMovement(delta) {
 		this.translateOnAxis(this.movementVector, this.speed * delta);
+
+		this.rotationVector = new THREE.Vector3(this.movementVector.x, this.movementVector.y, this.movementVector.z);
+
+		this.rotationVector.setX(this.rotationVector.z);
+		this.rotationVector.setZ(this.rotationVector.x);
+		this.rotationVector.normalize();
+		this.obj.rotateOnAxis(this.rotationVector, (this.speed * delta)/(this.radius)*100);
 	}
 /*
 	updateBallMovement() {
@@ -19,7 +26,12 @@ class Ball extends THREE.Object3D {
     	this.geometry = new THREE.SphereGeometry(this.radius, 32, 32);
         this.mesh = new THREE.Mesh(this.geometry, this.material);
         this.mesh.position.set(x, y, z);
-        this.add(this.mesh);
+        //this.add(this.mesh);
+        this.obj = new THREE.Object3D();
+        this.obj.position.set(x, y, z);
+        this.obj.add(this.mesh);
+
+        this.add(this.obj);
 	}
 
 	createCamera(x, y, z) {

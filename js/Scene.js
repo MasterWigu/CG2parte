@@ -29,6 +29,62 @@ class Scene extends THREE.Scene {
         return false;
     }
 
+
+    colidesWall(){ //verificacao entrar parede
+
+        for (var i = 0; i < this.ballVector.length; i++) {
+            var b = this.ballVector[i];
+            if (b.position.x <= -100+b.radius+0.5 || b.position.x >= 100-b.radius-0.5){
+                b.movementVector.multiply(new THREE.Vector3(-1,1,1));
+            }
+            if (b.position.z <= -50+b.radius+0.5 || b.position.z >= 50-b.radius-0.5) {
+                b.movementVector.multiply(new THREE.Vector3(1,1,-1));
+            }
+        }
+    }
+
+    colidesBall() {
+
+        for (var i = 0; i < this.ballVector.length; i++) {
+            var b1 = this.ballVector[i];
+            for (var j = i-1; j >= 0 ; j--) {
+
+                var b2 = this.ballVector[j];
+                console.log(this.ballVector[0].position.x);
+                if ((2 * b1.radius) >= Math.sqrt(Math.pow(b1.position.x-b2.position.x, 2) + Math.pow(b1.position.z-b2.position.z, 2))) {
+                    var c1 = new THREE.Vector3();
+                    c1.copy(b1.position);
+                    
+                    var c2 = new THREE.Vector3();
+                    c2.copy(b2.position);
+                    
+                    var v1 = new THREE.Vector3();
+                    v1.copy(b1.movementVector);
+                    
+                    var v2 = new THREE.Vector3();
+                    v2.copy(b2.movementVector);
+
+                    var c1_c2 = new THREE.Vector3();
+                    c1_c2.subVectors(c1,c2);
+
+                    var v1_v2 = new THREE.Vector3();
+                    v1_v2.subVectors(v1,v2);
+
+                    var num = c1_c2.dot(v1_v2);
+                    var den = Math.pow(c1.x - c2.x, 2) + Math.pow(c1.z - c2.z, 2);
+
+                    c1_c2.multiplyScalar(num/den);
+
+                    b1.movementVector.sub(c1_c2);
+                    b2.movementVector.add(c1_c2);
+
+                }
+
+                //v' = v - (((v1-v2).(c1-c2))/||c1-c2||^2)*(c1-c2)
+            }
+        }
+    }
+
     createScene() {
         'use strict';
 
@@ -196,9 +252,10 @@ class Scene extends THREE.Scene {
         
         this.render();
         this.controls.update(); //para a camara movivel (apagar)
-        requestAnimationFrame(this.animate.bind(this));
         this.movement();
-
+        this.colidesWall();
+        this.colidesBall();
+        requestAnimationFrame(this.animate.bind(this));
 
     }
 }
