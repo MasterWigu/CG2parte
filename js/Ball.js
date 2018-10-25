@@ -82,6 +82,6 @@ class Ball extends THREE.Object3D {
         	this.createCamera(25, this.radius, 0);
 
         this.movementVector = new THREE.Vector3(this.xx, 0, this.zz);
-        this.speed = THREE.Math.randFloat(0.04,0.3); 
+        this.speed = THREE.Math.randFloat(0.5,1); 
 	}
 }
