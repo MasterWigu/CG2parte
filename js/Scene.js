@@ -171,6 +171,7 @@ class Scene extends THREE.Scene {
             this.activeCamera.right = this.distance * aspect / 2;
             this.activeCamera.top = this.distance / 2;
             this.activeCamera.bottom = -this.distance / 2;
+            this.activeCamera.updateProjectionMatrix();
             this.renderer.setSize(window.innerWidth, window.innerHeight);
         }
 
