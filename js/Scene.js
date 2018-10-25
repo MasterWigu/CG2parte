@@ -3,9 +3,9 @@ var controls;
 class Scene extends THREE.Scene {
 
     movement() {
-        var delta = this.clock.getDelta();
+        this.delta = this.clock.getDelta();
         for (var i = 0; i <  this.ballVector.length; i++) {
-            this.ballVector[i].ballMovement(delta);
+            this.ballVector[i].ballMovement(this.delta);
         }
     }
 
@@ -45,12 +45,12 @@ class Scene extends THREE.Scene {
     }
 
     colidesBall() {
-
         for (var i = 0; i < this.ballVector.length; i++) {
             var b1 = this.ballVector[i];
             for (var j = i-1; j >= 0 ; j--) {
                 var b2 = this.ballVector[j];
-                if ((2 * b1.radius) >= Math.sqrt(Math.pow(b1.position.x-b2.position.x, 2) + Math.pow(b1.position.z-b2.position.z, 2))) {
+                var dist =Math.sqrt(Math.pow(b1.position.x-b2.position.x, 2) + Math.pow(b1.position.z-b2.position.z, 2))
+                if ((2 * b1.radius) >= dist) {
                     var c1 = new THREE.Vector3();
                     c1.copy(b1.position);
                     
@@ -77,7 +77,8 @@ class Scene extends THREE.Scene {
                     b1.movementVector.sub(c1_c2);
                     b2.movementVector.add(c1_c2);
 
-                    //v' = v - (((v1-v2).(c1-c2))/||c1-c2||^2)*(c1-c2)
+                    b1.ballMovementDist((2*b1.radius - dist)/2);
+                    b2.ballMovementDist((2*b1.radius - dist)/2);
                 }
             }
         }
@@ -113,7 +114,7 @@ class Scene extends THREE.Scene {
             }
         }
 
-        window.setInterval(this.updateMovement.bind(this), 2000);
+        window.setInterval(this.updateMovement.bind(this), 10000);
     }
     
     createCameras() {
@@ -155,30 +156,28 @@ class Scene extends THREE.Scene {
     
     onResize() {
         'use strict';
-    
-        if (this.activeCamera instanceof THREE.PerspectiveCamera) {
-            this.renderer.setSize(window.innerWidth, window.innerHeight);
-            
-            if (window.innerHeight > 0 && window.innerWidth > 0) {
-                this.activeCamera.aspect = window.innerWidth / window.innerHeight;
-                this.activeCamera.updateProjectionMatrix();
-            }
-        }
+        //this.renderer.setSize(window.innerWidth, window.innerHeight);
+        
+        this.camera0.aspect = window.innerWidth / window.innerHeight;
+        this.camera0.updateProjectionMatrix();
 
-        if (this.activeCamera instanceof THREE.OrthographicCamera) {
-            let aspect = window.innerWidth / window.innerHeight;
-            this.activeCamera.left = -this.distance * aspect / 2;
-            this.activeCamera.right = this.distance * aspect / 2;
-            this.activeCamera.top = this.distance / 2;
-            this.activeCamera.bottom = -this.distance / 2;
-            this.activeCamera.updateProjectionMatrix();
-            this.renderer.setSize(window.innerWidth, window.innerHeight);
-        }
+        this.camera2.aspect = window.innerWidth / window.innerHeight;
+        this.camera2.updateProjectionMatrix();
 
-    
-        /*this.camera1.update();
-        this.camera2.update();
-        this.camera3.update();*/
+        this.ballVector[0].camera3.aspect = window.innerWidth / window.innerHeight;
+        this.ballVector[0].camera3.updateProjectionMatrix();
+
+        this.distance = 110;
+        let aspect = window.innerWidth / window.innerHeight;
+        this.camera1.left = -this.distance * aspect / 2;
+        this.camera1.right = this.distance * aspect / 2;
+        this.camera1.top = this.distance / 2;
+        this.camera1.bottom = -this.distance / 2;
+        this.camera1.updateProjectionMatrix();
+
+        this.renderer.setSize(window.innerWidth, window.innerHeight);
+        
+
 
     }
 

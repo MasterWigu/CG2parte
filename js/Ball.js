@@ -1,10 +1,9 @@
 class Ball extends THREE.Object3D {
 
-	randomFromInterval(min,max) {
-    	return Math.random()*(max-min)+min;
-	}
-
 	ballMovement(delta) {
+		var mov2 = new THREE.Vector3();
+		mov2.copy(this.movementVector);
+		mov2.normalize();
 		this.translateOnAxis(this.movementVector, this.speed * delta);
 
 		this.rotationVector = new THREE.Vector3(this.movementVector.x, this.movementVector.y, this.movementVector.z);
@@ -15,8 +14,22 @@ class Ball extends THREE.Object3D {
 		this.obj.rotateOnAxis(this.rotationVector, (this.speed * delta)/(this.radius)*100);
 	}
 
+	ballMovementDist(dist) {
+		var mov2 = new THREE.Vector3();
+		mov2.copy(this.movementVector);
+		mov2.normalize();
+		this.translateOnAxis(mov2, dist);
+
+		this.rotationVector = new THREE.Vector3(this.movementVector.x, this.movementVector.y, this.movementVector.z);
+
+		this.rotationVector.setX(this.rotationVector.z);
+		this.rotationVector.setZ(this.rotationVector.x);
+		this.rotationVector.normalize();
+		this.obj.rotateOnAxis(this.rotationVector, dist/(this.radius)*100);
+	}
+
 	updateBallMovement() {
-		this.speed += 0.001;
+		this.speed += 0.05;
 	}
 
 	createBall (x, y, z) {
@@ -24,7 +37,6 @@ class Ball extends THREE.Object3D {
     	this.geometry = new THREE.SphereGeometry(this.radius, 32, 32);
         this.mesh = new THREE.Mesh(this.geometry, this.material);
         this.mesh.position.set(x, y, z);
-        //this.add(this.mesh);
         this.obj = new THREE.Object3D();
         this.obj.position.set(x, y, z);
         this.obj.add(this.mesh);
@@ -53,10 +65,12 @@ class Ball extends THREE.Object3D {
 
 		this.radius = 0.05 * (Math.sqrt(100*100+200*200));
 
-		this.material = new THREE.MeshBasicMaterial({ color: Math.floor(this.randomFromInterval(0, 0xffff00)), wireframe: false });
+		this.material = new THREE.MeshBasicMaterial({ color: Math.floor(THREE.Math.randFloat(0, 0xffff00)), wireframe: false });
 
-		this.xx = this.randomFromInterval(-99.5 + this.radius, 99.5 - this.radius);
-		this.zz = this.randomFromInterval(-49.5 + this.radius, 49.5 - this.radius);
+
+
+		this.xx = THREE.Math.randFloat(-99.5 + this.radius, 99.5 - this.radius);
+		this.zz = THREE.Math.randFloat(-49.5 + this.radius, 49.5 - this.radius);
 		
 		this.createBall(0, 0, 0);
 
@@ -68,6 +82,6 @@ class Ball extends THREE.Object3D {
         	this.createCamera(25, this.radius, 0);
 
         this.movementVector = new THREE.Vector3(this.xx, 0, this.zz);
-        this.speed = this.randomFromInterval(0.1,1); 
+        this.speed = THREE.Math.randFloat(0.04,0.3); 
 	}
 }
